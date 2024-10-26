@@ -1,0 +1,12 @@
+../Core/Src/stm32_tm1637.c:33:6:tm1637Init	32	static
+../Core/Src/stm32_tm1637.c:49:6:tm1637DisplayDecimal	32	static
+../Core/Src/stm32_tm1637.c:79:6:tm1637SetBrightness	16	static
+../Core/Src/stm32_tm1637.c:92:6:_tm1637Start	8	static
+../Core/Src/stm32_tm1637.c:100:6:_tm1637Stop	8	static
+../Core/Src/stm32_tm1637.c:111:6:_tm1637ReadResult	8	static
+../Core/Src/stm32_tm1637.c:121:6:_tm1637WriteByte	24	static
+../Core/Src/stm32_tm1637.c:138:6:_tm1637DelayUsec	24	static,ignoring_inline_asm
+../Core/Src/stm32_tm1637.c:147:6:_tm1637ClkHigh	8	static
+../Core/Src/stm32_tm1637.c:152:6:_tm1637ClkLow	8	static
+../Core/Src/stm32_tm1637.c:157:6:_tm1637DioHigh	8	static
+../Core/Src/stm32_tm1637.c:162:6:_tm1637DioLow	8	static
