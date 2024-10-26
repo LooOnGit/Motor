@@ -177,8 +177,6 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  tm1637Init();
-  tm1637SetBrightness(3);
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
   HAL_TIM_Encoder_Start(&htim1,TIM_CHANNEL_1);
@@ -199,6 +197,8 @@ int main(void)
   TM1637_Init(&display, TM1637_CLK_PORT, TM1637_CLK_PIN, TM1637_DIO_PORT, TM1637_DIO_PIN, 5);
   TM1637_SetBrightness(&display, 7, 1);
   TM1637_ShowNumberDec(&display, 1234, 0, 4, 0);
+
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -208,6 +208,21 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	//=======================================poten==========================
+	HAL_ADC_Start(&hadc1);
+	HAL_Delay(1000);
+	int adc1 = HAL_ADC_GetValue(&hadc1)*VOL_SUPPLY_MCU/ADC_12_BIT;
+	HAL_ADC_Stop(&hadc1);
+	int poten1 = (adc1*PWM_FULL_DUTY)/VOL_SUPPLY_MCU;
+
+	// display rate to poten
+	TM1637_SetBrightness(&display, 7, 1);
+	motor.poten1 = (poten1*MOTOR_MAX_SPEED)/PWM_FULL_DUTY;
+	TM1637_ShowNumberDec(&display, motor.poten1, 0, 4, 0);
+	//=======================================================================
+
+
 	  retractCm = 0;
 	 if(button.side == PRESS){
 		 slowStart(75);
@@ -729,6 +744,7 @@ void slowStartup(){
 }
 
 
+
 void setSpeed(){
 	HAL_ADC_Start(&hadc1);
 	HAL_Delay(1000);
@@ -737,9 +753,9 @@ void setSpeed(){
 	int poten1 = (adc1*PWM_FULL_DUTY)/VOL_SUPPLY_MCU;
 
 	// display rate to poten
-	tm1637SetBrightness(8);
+	TM1637_SetBrightness(&display, 7, 1);
 	motor.poten1 = (poten1*MOTOR_MAX_SPEED)/PWM_FULL_DUTY;
-	tm1637DisplayDecimal(motor.poten1, 0);
+	TM1637_ShowNumberDec(&display, motor.poten1, 0, 4, 0);
 
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, poten1);
 }
@@ -814,8 +830,8 @@ void retract(){
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, poten);
 
 	retractCm += (measureSpeed()*(-1))*3.14*D;
-	tm1637SetBrightness(8);
-	tm1637DisplayDecimal(retractCm, 0);
+	TM1637_SetBrightness(&display, 7, 1);
+	TM1637_ShowNumberDec(&display, retractCm, 0, 4, 0);
 }
 
 
